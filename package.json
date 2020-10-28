@@ -26,7 +26,8 @@
         "solidity-coverage": "^0.7.9",
         "ethlint": "^1.2.5",
         "truffle": "^5.1.32",
-        "truffle-flattener": "^1.4.4"
+        "truffle-flattener": "^1.4.4",
+        "truffle-assertions": "^0.9.2"
     },
     "scripts": {
         "test": "scripts/test.sh",
