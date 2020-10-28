@@ -3,7 +3,6 @@ pragma solidity ^0.5.0;
 import "./interface/ICompound.sol";
 import "./OneSplitBase.sol";
 
-
 contract OneSplitCompoundView is OneSplitViewWrapBase {
     function getExpectedReturnWithGas(
         IERC20 fromToken,

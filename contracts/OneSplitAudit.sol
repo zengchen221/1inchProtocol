@@ -3,9 +3,10 @@ pragma solidity ^0.5.0;
 import "@openzeppelin/contracts/math/Math.sol";
 import "@openzeppelin/contracts/ownership/Ownable.sol";
 import "./interface/IWETH.sol";
-import "./interface/IUniswapV2Exchange.sol";
+import "./interface/IUniswapV2Exchange2.sol";
 import "./IOneSplit.sol";
 import "./UniversalERC20.sol";
+
 
 
 contract IFreeFromUpTo is IERC20 {
@@ -294,12 +295,6 @@ contract OneSplitAudit is IOneSplit, Ownable {
         Balances memory beforeBalances = _getFirstAndLastBalances(tokens, true);
 
         // Transfer From
-        if (amount == uint256(-1)) {
-            amount = Math.min(
-                tokens.first().balanceOf(msg.sender),
-                tokens.first().allowance(msg.sender, address(this))
-            );
-        }
         tokens.first().universalTransferFromSenderToThis(amount);
         uint256 confirmed = tokens.first().universalBalanceOf(address(this)).sub(beforeBalances.ofFromToken);
 
@@ -356,8 +351,8 @@ contract OneSplitAudit is IOneSplit, Ownable {
     }
 
     function _chiBurnOrSell(address payable sponsor, uint256 amount) internal {
-        IUniswapV2Exchange exchange = IUniswapV2Exchange(0xa6f3ef841d371a82ca757FaD08efc0DeE2F1f5e2);
-        (uint256 sellRefund,,) = UniswapV2ExchangeLib.getReturn(exchange, chi, weth, amount);
+        IUniswapV2Exchange2 exchange = IUniswapV2Exchange2(0xa6f3ef841d371a82ca757FaD08efc0DeE2F1f5e2);
+        uint256 sellRefund = UniswapV2ExchangeLib2.getReturn(exchange, chi, weth, amount);
         uint256 burnRefund = amount.mul(18_000).mul(tx.gasprice);
 
         if (sellRefund < burnRefund.add(tx.gasprice.mul(36_000))) {
